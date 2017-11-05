@@ -10,11 +10,7 @@ plugin ideas are the spit, and the plugin is my "bukkit".
 
 ## TODO
 
-* Block iterator - `/iterate [[down|los]] [[range]]`
-* Entity/Block finder
-* Slime chunk finder
-  * Part of Entity/block finder command?
-  * `/find slimechunk`
+Document the various plugins.
 
 ## License
 
