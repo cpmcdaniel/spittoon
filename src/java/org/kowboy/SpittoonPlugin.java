@@ -4,7 +4,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import clojure.lang.IFn;
 import clojure.java.api.Clojure;
 
-public class SpigotREPLPlugin extends JavaPlugin {
+public class SpittoonPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         ClassLoader previous = Thread.currentThread().getContextClassLoader();
@@ -13,9 +13,10 @@ public class SpigotREPLPlugin extends JavaPlugin {
             Thread.currentThread().setContextClassLoader(cl);
 
             IFn require = Clojure.var("clojure.core", "require");
-            require.invoke(Clojure.read("org.kowboy.spigot-repl"));
+            require.invoke(Clojure.read("org.kowboy.bukkit.plugin"));
+            require.invoke(Clojure.read("org.kowboy.bukkit.repl"));
 
-            IFn enable = Clojure.var("org.kowboy.spigot-repl", "enable");
+            IFn enable = Clojure.var("org.kowboy.bukkit.plugin", "enable");
             enable.invoke(this);
         } finally {
             Thread.currentThread().setContextClassLoader(previous);
@@ -29,7 +30,7 @@ public class SpigotREPLPlugin extends JavaPlugin {
             ClassLoader cl = getClassLoader();
             Thread.currentThread().setContextClassLoader(cl);
 
-            IFn disable = Clojure.var("org.kowboy.spigot-repl", "disable");
+            IFn disable = Clojure.var("org.kowboy.bukkit.plugin", "disable");
             disable.invoke(this);
         } finally {
             Thread.currentThread().setContextClassLoader(previous);

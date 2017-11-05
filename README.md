@@ -1,8 +1,20 @@
-# SpigotREPL
+# Spittoon - A Bukkit Plugin for Minecraft
 
-An example of a Spigot Plugin that embeds a Clojure REPL (port 7788). From the
-project you can make a direct REPL connection with
-`boot repl --host localhost --port 7788`.
+A playground for plugin experimentation using Clojure.
+
+Spittoon:
+> a receptacle for spit, usually in a public place
+
+It also accurately describes the intention for this plugin, where my oddball
+plugin ideas are the spit, and the plugin is my "bukkit".
+
+## TODO
+
+* Block iterator - `/iterate [[down|los]] [[range]]`
+* Entity/Block finder
+* Slime chunk finder
+  * Part of Entity/block finder command?
+  * `/find slimechunk`
 
 ## License
 

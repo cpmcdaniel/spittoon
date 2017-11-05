@@ -1,8 +1,17 @@
+(require 'boot.repl)
+(swap! boot.repl/*default-dependencies*
+       concat '[[cider/cider-nrepl "0.15.1"]])
+
+(swap! boot.repl/*default-middleware*
+       concat '[cider.nrepl/cider-middleware])
+
 (set-env!
  :dependencies '[[org.spigotmc/spigot-api "1.12.2-R0.1-SNAPSHOT" :scope "provided"]
                  [org.clojure/clojure "1.8.0" :scope "runtime"]
                  [org.clojure/tools.nrepl "0.2.12"]
-                 [org.clojure/tools.namespace "0.2.11"]]
+                 [org.clojure/tools.namespace "0.2.11"]
+                 [org.clojure/core.match "0.3.0-alpha5"]
+                 [cider/cider-nrepl "0.15.1"]]
  :source-paths #{"src/clojure" "src/java"}
  :resource-paths #{"src/resources"}
  :repositories [["clojars" {:url "https://clojars.org/repo/"}]
@@ -10,24 +19,23 @@
                 ["spigot"  {:url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"}]])
 
 (task-options!
- pom {:project 'org.kowboy/spigot-repl
+ pom {:project 'org.kowboy/spittoon
       :version "0.1.0"
-      :description "Clojure REPL plugin for Spigot"
-      :url "https://github.com/cpmcdaniel/SpigotREPL"
-      :scm {:url "https://github.com/cpmcdaniel/SpigotREPL"}
+      :description "KowboyMac's Clojure Minecraft Plugin"
+      :url "https://github.com/cpmcdaniel/spittoon"
+      :scm {:url "https://github.com/cpmcdaniel/spittoon"}
       :license {"Eclipse Public License"
                 "http://www.eclipse.org/legal/epl-v10.html"}}
  uber {:exclude-scope #{"provided"}}
- jar {:main 'org.kowboy.spigot-repl}
- aot {:namespace #{'org.kowboy.spigot-repl}}
- install {:pom "org.kowboy/spigot-repl"}
+ aot {:all true}
+ install {:pom "org.kowboy/spittoon"}
  push {:repo "clojars"
-       :pom "org.kowboy/spigot-repl"}
+       :pom "org.kowboy/spittoon"}
  )
 
 (deftask build
   []
-  (comp (pom) (aot) (javac) (uber) (jar) (install)))
+  (comp (speak) (pom) (aot) (javac) (uber) (jar) (install)))
 
 (deftask deploy
   []
@@ -35,6 +43,6 @@
 
 (deftask dev
   []
-  (comp (watch) (speak) (aot) (javac) (uber) (jar) (install)
-        (sift :include [#"spigot.*\.jar"])
+  (comp (watch) (build)
+        (sift :include [#"spittoon.*\.jar"])
         (target)))

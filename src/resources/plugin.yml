@@ -1,7 +1,64 @@
-name: SpigotREPL
+name: Spittoon
 
 version: 0.1.0
 
 author: Craig McDaniel
 
-main: org.kowboy.SpigotREPLPlugin
+main: org.kowboy.SpittoonPlugin
+
+commands:
+  launcher:
+    description: Turns a number of mob drops into useable launchers that spawn the mob they came from, sets them on fire, hurls them forward in the air, and then blows up on contact.
+    usage: | 
+             /launcher on
+             /launcher off
+             /launcher power <power-level>
+    permission: kowboy.spittoon
+    permission-message: "You don't have permission kowboy.spittoon"
+  repl:
+    description: Starts a Clojure REPL on an available port.
+    usage: | 
+             /repl on
+             /repl off 
+    permission: kowboy.spittoon
+    permission-message: "You don't have permission kowboy.spittoon"
+  zeus:
+    description: Toggles the Zeus Lightning Rod on and off.
+    usage: | 
+             /zeus on
+             /zeus off
+    permission: kowboy.spittoon
+    permission-message: "You don't have permission kowboy.spittoon"
+  xray:
+    description: Uses a block iterator to report on blocks along the players line-of-sight.
+    usage: /xray [distance]
+    permission: kowboy.spittoon
+    permission-message: "You don't have permission kowboy.spittoon"
+  find:
+    description: Find nearby blocks, enities, and slime chunks.
+    usage: |
+             /find entities 
+             /find entity <type> [distance]
+             /find blocks [inradius]
+             /find block <type> [inradius]
+             /find slime [inradius]
+    permission: kowboy.spittoon
+    permission-message: "You don't have permission kowboy.spittoon"
+  excavate:
+    description: Excavate the entire chunk, leaving only bedrock and item stacks of the excavated materials.
+    usage: /excavate
+    permission: kowboy.spittoon
+    permission-message: "You don't have permission kowboy.spittoon"
+  eraser:
+    description: Allows a player to destroy items by dropping them from their inventory.
+    usage: |
+             /eraser on
+             /eraser off
+    permission: kowboy.spittoon
+    permission-message: "You don't have permission kowboy.spittoon"
+
+    
+
+permissions:
+  kowboy.spittoon:
+    description: Basic permission to use the Spittoon plugin.
