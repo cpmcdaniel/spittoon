@@ -7,6 +7,7 @@
             [org.kowboy.bukkit.xray :as xray]
             [org.kowboy.bukkit.excavator :as excavator]
             [org.kowboy.bukkit.eraser :as eraser]
+            [org.kowboy.bukkit.journal :as journal]
             [org.kowboy.bukkit.listener :as listener])
   (:import [org.bukkit.command CommandSender]))
 
@@ -24,6 +25,7 @@
   (register-command plugin "find"     (finder/find-command plugin))
   (register-command plugin "excavate" (excavator/excavate-command plugin))
   (register-command plugin "eraser"   (eraser/eraser-command plugin))
+  (register-command plugin "journal"  (journal/journal-command plugin))
   
   ;; tab completions
   (listener/register-tab-completer 
@@ -32,7 +34,8 @@
      "zeus" zeus/token-tree
      "launcher" launcher/token-tree
      "find" finder/token-tree
-     "eraser" eraser/token-tree}))
+     "eraser" eraser/token-tree
+     "journal" journal/token-tree}))
 
 (defn register-listeners
   [plugin]

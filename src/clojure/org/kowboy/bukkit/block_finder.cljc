@@ -386,7 +386,7 @@
            bad-args
            errors]
     :or {inradius chunks/max-inradius}}]
-  (when errors (util/send-message player errors))
+  (when (seq errors) (util/send-message player errors))
   (if bad-args
     false
 

@@ -24,7 +24,8 @@
   (def player (.. @plugin (getServer) (getPlayer "KowboyMac")))
 
   (def world (.getWorld player))
-  
+ 
+  (.. player getWorld getName) 
   
 
   (def inventory (.getInventory player))
@@ -41,9 +42,7 @@
                      Enchantment/MENDING (int 1)
                      Enchantment/LOOT_BONUS_BLOCKS (int 3)})
 
-  (.. player (getTargetBlock nil 10) 
-      (getRelative BlockFace/UP)
-      (setType Material/TORCH false))
+  (.getDataFolder @plugin) 
 
   ) 
 

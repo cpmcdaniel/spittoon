@@ -15,6 +15,7 @@ finder:
   - quartz_ore
   - glowstone
   - clay
+  - sea_lantern
 excavate:
   nodrop:
     - stone(0)

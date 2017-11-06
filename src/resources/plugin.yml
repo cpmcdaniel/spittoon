@@ -56,6 +56,14 @@ commands:
              /eraser off
     permission: kowboy.spittoon
     permission-message: "You don't have permission kowboy.spittoon"
+  journal:
+    description: Keep a player journal.
+    usage: |
+             /journal add This is a nice journal entry
+             /journal show [page]
+             /journal rem <entry number>
+    permission: kowboy.spittoon
+    permission-message: "You don't have permission kowboy.spittoon"
 
     
 
