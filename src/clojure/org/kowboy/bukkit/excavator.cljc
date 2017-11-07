@@ -84,18 +84,32 @@
         (fortune-pred block) fortune-pickaxe
         :else                silk-pickaxe))))
 
+(def filler-material
+  {"NETHER" Material/NETHER_BRICK
+   "NORMAL" Material/DIRT
+   "THE_END" Material/PURPUR_BLOCK})
+
+(def floor-material
+  {"NETHER" Material/NETHER_BRICK
+   "NORMAL" Material/GRASS
+   "THE_END" Material/PURPUR_BLOCK})
+
 (defn fill-floor!
   "Bedrock is very uneven at the bottom. Let's smooth out the floor by filling
   empty space with dirt."
   [{:keys [player ^Chunk player-chunk] :as ctx}]
-  (doall
-    (for [y (range 0 6)
-          x (range 16)
-          z (range 16)
-          :let [block (.getBlock player-chunk x y z)
-                block-type (if (= 5 y) Material/GRASS Material/DIRT)]
-          :when (blocks/air? block)]
-      (doto block (.setType block-type false))))
+
+  (let [env (util/environment player-chunk)
+        filler (filler-material env)
+        floor (floor-material env)] 
+    (doall
+      (for [y (range 0 6)
+            x (range 16)
+            z (range 16)
+            :let [block (.getBlock player-chunk x y z)
+                  block-type (if (= 5 y) floor filler)]
+            :when (blocks/air? block)]
+        (doto block (.setType block-type false)))))
   ctx)
 
 (defn light-floor!
@@ -128,6 +142,12 @@
             (setType Material/GLOWSTONE false)))))
   ctx)
 
+(defn- perimeter-filter-fn
+  [^Chunk ch]
+  (if (= "NORMAL" (util/environment ch))
+    (some-fn blocks/air? blocks/liquid?)  
+    blocks/liquid?))
+
 (defn excavate!
   "Clears an entire chunk by mining all desirable items. Which blocks 
   yield drops is controlled by the strategy (see mining-strategy above).
@@ -136,6 +156,8 @@
   [{:keys [player plugin strategy] :as ctx}]
   (let [^Chunk ch (.getChunk (util/location player))
         ^World world (util/world player)
+        perimeter-filter (perimeter-filter-fn ch)
+        filler (filler-material (util/environment ch))
         northwest-perimiter-x (dec (* 16 (.getX ch)))
         northwest-perimiter-z (dec (* 16 (.getZ ch)))
         
@@ -149,8 +171,8 @@
     ;; We don't want liquid hot magma pouring into our hole and destroying drops.
     (doseq [^Block block (flatten (chunks/chunk-perimeter-blocks 
                                     ch 
-                                    (some-fn blocks/air? blocks/liquid?)))]
-      (.setType block Material/DIRT false)) 
+                                    perimeter-filter))]
+      (.setType block filler false)) 
 
     ;; break all the blocks in the chunk (besides air and bedrock).
     (doseq [block (chunks/chunk-blocks ch excavation-filter)]

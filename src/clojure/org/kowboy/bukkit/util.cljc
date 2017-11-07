@@ -5,7 +5,7 @@
            [org.bukkit.command CommandSender]
            [org.bukkit.inventory ItemStack]
            [org.bukkit.material MaterialData]
-           [org.bukkit Location Material]))
+           [org.bukkit Location Material Chunk World]))
 
 (defn- get-message
   [^String message & args]
@@ -109,3 +109,17 @@
 (extend-protocol HasDataValue
   Block
   (dv [^Block block] (.getData block)))
+
+
+(defprotocol HasEnvironment
+  (environment [thingy]))
+
+(extend-protocol HasEnvironment
+  World
+  (environment [^World world] (.. world getEnvironment toString))
+  
+  Chunk
+  (environment [^Chunk ch] (environment (.getWorld ch)))
+
+  Location
+  (environment [^Location loc] (environment (.getWorld loc))))

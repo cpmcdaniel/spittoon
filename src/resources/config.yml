@@ -20,6 +20,7 @@ excavate:
   nodrop:
     - stone(0)
     - dirt(0)
+    - netherrack
   fortune:
     - coal_ore
     - diamond_ore

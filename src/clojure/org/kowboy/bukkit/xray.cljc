@@ -50,7 +50,7 @@
   "Generates block-info and sends the results to the player console."
   [^Player player distance]
   (util/send-message player (format "Blocks along line of sight (range %d):" distance))
-  (util/send-message player (into-array String (xray player distance)))
+  (util/send-message player (xray player distance))
   ;; Return true for command executor
   true)
 

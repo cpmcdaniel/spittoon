@@ -22,14 +22,22 @@
           z (take side-length (iterate inc northwest-z))]
       (.getChunkAt (util/world initial-loc) x z))))
 
+(defn- highest-block-fn
+  [^Chunk ch]
+  (let [^ChunkSnapshot cs (.getChunkSnapshot ch)]
+    (if (= "NORMAL" (util/environment ch))
+      (fn [x z] (.getHighestBlockYAt cs x z))
+      (constantly 127))))
+
 (defn chunk-blocks
   "Gets all blocks that match the filter in the given chunk."
   [^Chunk ch
    block-filter]
-  (let [^ChunkSnapshot cs (.getChunkSnapshot ch)]
+  (let [^ChunkSnapshot cs (.getChunkSnapshot ch)
+        highest-block (highest-block-fn ch)]
     (for [x (range 0 16) 
           z (range 0 16)
-          y (range 1 (.getHighestBlockYAt cs x z))
+          y (range 1 (highest-block x z))
           :let [block (.getBlock ch x y z)]
           :when (block-filter block)]
       block)))
@@ -44,6 +52,7 @@
   ;; then process along the y-axis. We will do this in 4 parts - one
   ;; for each edge.
   (let [^World world (.getWorld ch)
+        highest-block (highest-block-fn ch)
         west-x  (dec (* 16 (.getX ch)))
         east-x  (+ 17 west-x)
         north-z (dec (* 16 (.getZ ch)))
@@ -54,7 +63,7 @@
                    (for [x (take 17 (iterate dec east-x))] [x south-z])
                    (for [z (take 17 (iterate dec south-z))] [west-x z]))]
     (for [[x z] xz-pairs]
-      (for [y (range 1 (.getHighestBlockYAt world x z))
+      (for [y (range 1 (highest-block x z))
             :let [^Block block (.getBlockAt world x y z)]
             :when (block-filter block)]
         block))))
