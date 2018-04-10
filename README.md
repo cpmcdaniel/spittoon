@@ -12,8 +12,8 @@ plugin ideas are the spit, and the plugin is my "bukkit".
 
 1. Download and install [SpigotMC](http://www.spigotmc.org) - follow their [BuildTools guide](https://www.spigotmc.org/wiki/buildtools/)
 2. Install [Boot](http://boot-clj.com/) (Clojure build tooling)
-3. Clone this repo locally (we'll call it $SPITTOON_DIR)
-4. From your $SPITTOON_DIR, run `boot build`
+3. Clone this repo locally (we'll call it ``$SPITTOON_DIR`)
+4. From your ``$SPITTOON_DIR`, run `boot build`
 5. Copy `$HOME/.m2/repository/org/kowboy/spittoon/0.1.0/spittoon-0.1.0.jar` into the `plugins` directory of your Spigot server
 
 Optional - instead of copying the JAR file, for local development you can create a symbolic link to the maven artifact
@@ -30,6 +30,8 @@ log what port the REPL is running on:
 ```
 [18:37:14 INFO]: [Spittoon] REPL started on port 60981.
 ```
+
+To add new commands or listeners, you will have to rebuild the JAR. Sad face.
 
 ## TODO
 
