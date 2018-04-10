@@ -1,7 +1,5 @@
 (ns org.kowboy.bukkit.repl
   (:require [clojure.tools.nrepl.server :as nrepl]
-            [cider.nrepl :refer [cider-nrepl-handler]]
-            [org.kowboy.bukkit.listener :as listener]
             [org.kowboy.bukkit.scratch :as scratch])
   (:import [org.bukkit.command CommandExecutor]))
 
@@ -24,6 +22,10 @@
 
   ([plugin] (stop! plugin nil)))
 
+(defn nrepl-handler []
+  (require 'cider.nrepl)
+  (ns-resolve 'cider.nrepl 'cider-nrepl-handler))
+
 (defn start!
   "If the REPL is not running, start it."
   ([plugin sender]
@@ -38,7 +40,7 @@
                   ;; return the current value
                   server)
               ;; not running, start a new server and return it
-              (let [new-server (nrepl/start-server :handler cider-nrepl-handler)]
+              (let [new-server (nrepl/start-server :handler (nrepl-handler))]
                 (scratch/inject-plugin plugin)
                 (when sender
                   (.sendMessage sender (format "REPL started on port %d"

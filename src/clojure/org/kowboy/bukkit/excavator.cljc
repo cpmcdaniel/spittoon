@@ -3,7 +3,7 @@
             [org.kowboy.bukkit.chunks :as chunks]
             [org.kowboy.bukkit.blocks :as blocks])
   (:import [org.bukkit.command CommandExecutor] 
-           [org.bukkit.block Block]
+           [org.bukkit.block Block BlockFace]
            [org.bukkit.enchantments Enchantment]
            [org.bukkit.entity Player]
            [org.bukkit.inventory ItemStack]
@@ -66,14 +66,14 @@
         block-pred (partial make-block-pred plugin)
         nodrop-pred (apply some-fn (map block-pred nodrop))
         fortune-pred (apply some-fn (map block-pred fortune))
-        
+
         ;; Tools for breaking blocks naturally.
-        fortune-pickaxe (doto 
+        fortune-pickaxe (doto
                           (ItemStack. Material/DIAMOND_PICKAXE 1)
                           (.addEnchantments {Enchantment/DURABILITY (int 3)
                                              Enchantment/DIG_SPEED (int 5)
                                              Enchantment/LOOT_BONUS_BLOCKS (int 3)}))
-        silk-pickaxe    (doto 
+        silk-pickaxe    (doto
                           (ItemStack. Material/DIAMOND_PICKAXE 1)
                           (.addEnchantments {Enchantment/DURABILITY (int 3)
                                              Enchantment/DIG_SPEED (int 5)
@@ -101,7 +101,7 @@
 
   (let [env (util/environment player-chunk)
         filler (filler-material env)
-        floor (floor-material env)] 
+        floor (floor-material env)]
     (doall
       (for [y (range 0 6)
             x (range 16)
@@ -113,14 +113,32 @@
   ctx)
 
 (defn light-floor!
-  "Place glowstone on the floor in locations that will prevent mob 
+  "Place glowstone on the floor in locations that will prevent mob
   spawning."
   [{:keys [player ^Chunk player-chunk] :as ctx}]
-  (doseq [[x z] [[3 3]              [12 3] 
+  (doseq [[x z] [[4 2] [2 4]        [11 2] [13 4]
                         [7 7] [8 7]
-                        [7 8] 
-                 [3 12]             [12 12]]]
+                        [7 8]
+                 [2 11] [4 13]      [11 13] [13 11]]]
     (.. player-chunk (getBlock x 5 z) (setType Material/GLOWSTONE false)))
+  ctx)
+
+(defn prevent-slimes!
+  "Places bottom half-slabs on top of all grass blocks to prevent spawning."
+  [{:keys [player ^Chunk player-chunk] :as ctx}]
+  (when (.isSlimeChunk player-chunk)
+    (let [env (util/environment player-chunk)
+          floor (floor-material env)
+          slab-type Material/STEP
+          slab-data 0x02]
+      (doall 
+        (for [x (range 16)
+              z (range 16)
+              :let [floor-block (.getBlock player-chunk x 5 z)]
+              :when (= floor (util/material floor-block))]
+          (doto (.getRelative floor-block BlockFace/UP)
+            (.setType slab-type false)
+            (.setData slab-data))))))
   ctx)
 
 (defn light-spawners!
@@ -130,9 +148,9 @@
   [{:keys [spawners] :as ctx}]
   ;; Create x, y, z offsets where we will place the glowstone. One in each
   ;; of the 8 corners, as well as one above and one below the spawner.
-  (let [offsets (concat 
+  (let [offsets (concat
                   (for [x [-4 4] z [-4 4] y [-2 2]]
-                    [x y z]) 
+                    [x y z])
                   [[0 -2 0] [0 2 0]])]
     (doall
       (for [^Block spawner spawners
@@ -145,11 +163,11 @@
 (defn- perimeter-filter-fn
   [^Chunk ch]
   (if (= "NORMAL" (util/environment ch))
-    (some-fn blocks/air? blocks/liquid?)  
+    (some-fn blocks/air? blocks/liquid?)
     blocks/liquid?))
 
 (defn excavate!
-  "Clears an entire chunk by mining all desirable items. Which blocks 
+  "Clears an entire chunk by mining all desirable items. Which blocks
   yield drops is controlled by the strategy (see mining-strategy above).
   The chunk will first be protected from lava and water blocks around the
   perimeter by filling in those blocks with dirt."
@@ -160,35 +178,34 @@
         filler (filler-material (util/environment ch))
         northwest-perimiter-x (dec (* 16 (.getX ch)))
         northwest-perimiter-z (dec (* 16 (.getZ ch)))
-        
+
         ;; Find spawners before we start breaking things.
         ;; We will need this later so we can put lights around
         ;; them to prevent spawning.
-        spawners (chunks/chunk-blocks 
+        spawners (chunks/chunk-blocks
                    ch (blocks/material-predicate Material/MOB_SPAWNER))]
 
     ;; Liquid blocks around the perimiter need to be sealed off!
     ;; We don't want liquid hot magma pouring into our hole and destroying drops.
-    (doseq [^Block block (flatten (chunks/chunk-perimeter-blocks 
-                                    ch 
+    (doseq [^Block block (flatten (chunks/chunk-perimeter-blocks
+                                    ch
                                     perimeter-filter))]
-      (.setType block filler false)) 
+      (.setType block filler false))
 
     ;; break all the blocks in the chunk (besides air and bedrock).
     (doseq [block (chunks/chunk-blocks ch excavation-filter)]
       (break-block block (strategy block)))
-    
+
     (-> ctx
         (assoc :player-chunk ch :spawners spawners)
-        ;; make a smooth floor. 
+        ;; make a smooth floor.
         (fill-floor!)
         ;; prevent spawns.
         (light-floor!)
         (light-spawners!)
-        )
-    
+        (prevent-slimes!))
+
     (.teleport player (doto (util/location player) (.setY 6)))
-    
     ))
 
 

@@ -8,6 +8,7 @@
             [org.kowboy.bukkit.excavator :as excavator]
             [org.kowboy.bukkit.eraser :as eraser]
             [org.kowboy.bukkit.journal :as journal]
+            [org.kowboy.bukkit.drill :as drill]
             [org.kowboy.bukkit.listener :as listener])
   (:import [org.bukkit.command CommandSender]))
 
@@ -26,9 +27,9 @@
   (register-command plugin "excavate" (excavator/excavate-command plugin))
   (register-command plugin "eraser"   (eraser/eraser-command plugin))
   (register-command plugin "journal"  (journal/journal-command plugin))
-  
+
   ;; tab completions
-  (listener/register-tab-completer 
+  (listener/register-tab-completer
     plugin
     {"repl" repl/token-tree
      "zeus" zeus/token-tree
@@ -41,13 +42,14 @@
   [plugin]
   (launcher/register-listeners plugin)
   (zeus/register-listeners plugin)
-  (eraser/register-listeners plugin))
+  (eraser/register-listeners plugin)
+  (drill/register-listeners plugin))
 
 (defn enable [plugin]
   ;; be sure to write out plugins/Spittoon/config.yaml
   ;; does not overwrite if it already exists.
   (.saveDefaultConfig plugin)
-  
+
   ;; Start a REPL and log the port number.
   (.. plugin (getLogger) (info (format "REPL started on port %d."
                                        (:port (repl/start! plugin)))))

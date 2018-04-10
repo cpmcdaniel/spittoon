@@ -20,8 +20,6 @@
                  "off" nil
                  "power" nil})
 
-(def default-power 4.0)
-
 ;; State for the launcher plugin is held in config.yml
 ;; This can be managed through the /launcher command.
 (defn launcher-command
@@ -41,17 +39,19 @@
               true)
           false)))))
 
-(def material->entity 
-  {Material/LEATHER org.bukkit.entity.Cow
+(def material->entity
+  {Material/LEATHER     org.bukkit.entity.Cow
    Material/RABBIT_HIDE org.bukkit.entity.Rabbit
-   Material/PORK org.bukkit.entity.Pig
+   Material/PORK        org.bukkit.entity.Pig
    Material/GOLD_NUGGET org.bukkit.entity.PigZombie
-   Material/FEATHER org.bukkit.entity.Chicken
-   Material/STRING org.bukkit.entity.Spider
+   Material/FEATHER     org.bukkit.entity.Chicken
+   Material/STRING      org.bukkit.entity.Spider
+   Material/CARPET      org.bukkit.entity.Llama
    ;; can add more here later...
    })
 
 (def vector-mult 3)
+(def default-power 4.0)
 
 (defn fire [^Plugin plugin
             ^PlayerInteractEvent event]
@@ -63,7 +63,7 @@
         ^Location loc (.add (util/location player) 0 1 0)
         ^Vector v (.multiply (.getDirection loc) vector-mult) 
         ^LivingEntity entity (.spawn world loc entity-class)
-        power (float (.. plugin getConfig (getDouble "launcher.power" default-power))) 
+        power (float (.. plugin getConfig (getDouble "launcher.power" default-power)))
 
         ;; This runnable checks repeatedly to see if the entity has hit
         ;; the ground yet. When it does, it will explode and die in a fire.

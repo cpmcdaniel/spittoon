@@ -20,6 +20,7 @@
   (:require [clojure.string :as str]
             [org.kowboy.bukkit.util :as util])
   (:import [java.io File]
+           [org.bukkit Location]
            [org.bukkit.command CommandExecutor]
            [org.bukkit.entity Player]
            [org.bukkit.plugin Plugin]
@@ -27,7 +28,8 @@
 
 (def token-tree {"add" nil
                  "show" nil
-                 "rem" nil})
+                 "rem" nil
+                 "tp" nil})
 
 (defn journal-file
   [^Plugin plugin ^Player player]
@@ -58,33 +60,36 @@
     :else
     (assoc ctx :command :show :page 1)))
 
-(defn parse-rem-args
-  "Parses the required journal entry number for the 'rem' command."
-  [{:keys [args] :as ctx}]
+(defn parse-entry-arg
+  "Parses the required journal entry number for the 'rem' and 'tp' commands."
+  [{:keys [args] :as ctx} command-key]
   (if (not= 1 (count args))
     (assoc ctx :bad-args true)
     (if-let [entry (try (Integer/parseInt (first args))
                         (catch NumberFormatException e nil))]
       (assoc ctx
-             :command :rem
+             :command command-key 
              :entry entry)
       (assoc ctx
              :bad-args true
-             :errors [(format "%s is not a valid page number" (first args))]))))
+             :errors [(format "%s is not a valid entry number" (first args))]))))
 
 (defn parse-args
   [{:keys [player args plugin] :as ctx}]
-  (condp = (first args)
-    "add"  (assoc ctx 
-                  :command :add 
-                  :message (str/join " " (rest args)))
-    "show" (parse-show-args (update ctx :args rest))
-    "rem"  (parse-rem-args  (update ctx :args rest))
-    ;; first argument not recognized
-    (assoc ctx 
-           :bad-args true
-           :errors [(format "%s not recognized as first argument."
-                            (first args))])))
+  (let [first-arg (first args)]
+    (as-> (update ctx :args rest) ctx
+      (condp = first-arg
+        "add"  (assoc ctx 
+                      :command :add 
+                      :message (str/join " " (:args ctx)))
+        "show" (parse-show-args ctx)
+        "rem"  (parse-entry-arg ctx :rem)
+        "tp"   (parse-entry-arg ctx :tp)
+        ;; first argument not recognized
+        (assoc ctx 
+               :bad-args true
+               :errors [(format "%s not recognized as first argument."
+                                first-arg)])))))
 
 (defn load-journal
   "Loads the journal data from storage."
@@ -112,18 +117,20 @@
     (.save journal (journal-file plugin player)))
   ctx)
 
+(defn get-entries [journal]
+  (vec (.getStringList journal "entries")))
 (def page-size 8)
 
 (defmethod journal :show
   [{:keys [journal page player] :as ctx}]
-  (let [entry-list (.getStringList journal "entries")
+  (let [entries (get-entries journal)
         start-index (* (dec page) page-size)
-        entries (->> entry-list
-                     (drop start-index)
-                     (take page-size)
-                     (map-indexed #(str (+ 1 (* page-size (dec page)) %1) ". " %2)))
-        total-pages (inc (quot (count entry-list) page-size))]
-    (util/send-message player entries)
+        page-entries (->> entries
+                          (drop start-index)
+                          (take page-size)
+                          (map-indexed #(str (+ 1 (* page-size (dec page)) %1) ". " %2)))
+        total-pages (inc (quot (count entries) page-size))]
+    (util/send-message player page-entries)
     (when (and (< 1 total-pages)
                (<= page total-pages))
       (util/send-message player (format "Page %d of %d" page total-pages))))
@@ -131,13 +138,32 @@
 
 (defmethod journal :rem
   [{:keys [plugin player journal entry] :as ctx}]
-  (let [entry-vec (vec (.getStringList journal "entries"))]
+  (let [entry-vec (get-entries journal)]
     (.set journal "entries" 
           (into-array String (concat 
                                (subvec entry-vec 0 (dec entry))
                                (subvec entry-vec entry))))
     (.save journal (journal-file plugin player)))
   ctx)
+
+(def location-re #"\((-?\d+),\s(-?\d+),\s(-?\d+)\)")
+(defn- get-entry-loc [{:keys [player journal entry]}]
+  (let [entry-str (get (get-entries journal) (dec entry))
+        [x y z]
+        (when entry-str
+          (->> (re-matcher location-re entry-str)
+               (re-find)
+               (rest) ;; lose the full match, we only care about the groups
+               (map #(Integer/parseInt %))))]
+    (when (and x y z) (Location. (util/world player) x y z))))
+
+(defmethod journal :tp
+  [{:keys [plugin player journal entry] :as ctx}]
+  (if-let [loc (get-entry-loc ctx)]
+    (do (.teleport player loc)
+        ctx)
+    (assoc ctx :errors
+               (format "Can't find location for entry %d" entry))))
 
 (defn journal-command
   [plugin]

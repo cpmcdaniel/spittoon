@@ -38,7 +38,7 @@ commands:
     description: Find nearby blocks, enities, and slime chunks.
     usage: |
              /find entities 
-             /find entity <type> [distance]
+             /find entity <type>
              /find blocks [inradius]
              /find block <type> [inradius]
              /find slime [inradius]
@@ -62,6 +62,7 @@ commands:
              /journal add This is a nice journal entry
              /journal show [page]
              /journal rem <entry number>
+             /journal tp <entry number>
     permission: kowboy.spittoon
     permission-message: "You don't have permission kowboy.spittoon"
 

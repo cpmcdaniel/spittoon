@@ -1,17 +1,18 @@
 (require 'boot.repl)
 (swap! boot.repl/*default-dependencies*
-       concat '[[cider/cider-nrepl "0.15.1"]])
+       concat '[[cider/cider-nrepl "0.17.0-snapshot"]])
 
 (swap! boot.repl/*default-middleware*
        concat '[cider.nrepl/cider-middleware])
 
 (set-env!
  :dependencies '[[org.spigotmc/spigot-api "1.12.2-R0.1-SNAPSHOT" :scope "provided"]
+                 [onetom/boot-lein-generate "0.1.3" :scope "test"]
                  [org.clojure/clojure "1.8.0" :scope "runtime"]
                  [org.clojure/tools.nrepl "0.2.12"]
                  [org.clojure/tools.namespace "0.2.11"]
                  [org.clojure/core.match "0.3.0-alpha5"]
-                 [cider/cider-nrepl "0.15.1"]]
+                 [cider/cider-nrepl "0.17.0-snapshot"]]
  :source-paths #{"src/clojure" "src/java"}
  :resource-paths #{"src/resources"}
  :repositories [["clojars" {:url "https://clojars.org/repo/"}]
@@ -32,6 +33,10 @@
  push {:repo "clojars"
        :pom "org.kowboy/spittoon"}
  )
+
+(require 'boot.lein)
+(boot.lein/generate)
+
 
 (deftask build
   []

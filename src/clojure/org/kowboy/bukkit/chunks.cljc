@@ -22,11 +22,21 @@
           z (take side-length (iterate inc northwest-z))]
       (.getChunkAt (util/world initial-loc) x z))))
 
-(defn- highest-block-fn
-  [^Chunk ch]
-  (let [^ChunkSnapshot cs (.getChunkSnapshot ch)]
-    (if (= "NORMAL" (util/environment ch))
-      (fn [x z] (.getHighestBlockYAt cs x z))
+(defprotocol HighestBlockFn
+  (highest-block-fn [thingy]))
+
+(extend-protocol HighestBlockFn
+  Chunk
+  (highest-block-fn [ch]
+   (let [^ChunkSnapshot cs (.getChunkSnapshot ch)]
+     (if (= "NORMAL" (util/environment ch))
+       (fn [x z] (.getHighestBlockYAt cs x z))
+       (constantly 127))))
+  
+  World
+  (highest-block-fn [w]
+    (if (= "NORMAL" (util/environment w))
+      (fn [x z] (.getHighestBlockYAt w x z))
       (constantly 127))))
 
 (defn chunk-blocks
@@ -52,7 +62,7 @@
   ;; then process along the y-axis. We will do this in 4 parts - one
   ;; for each edge.
   (let [^World world (.getWorld ch)
-        highest-block (highest-block-fn ch)
+        highest-block (highest-block-fn world)
         west-x  (dec (* 16 (.getX ch)))
         east-x  (+ 17 west-x)
         north-z (dec (* 16 (.getZ ch)))

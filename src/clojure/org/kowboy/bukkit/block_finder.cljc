@@ -99,34 +99,21 @@
             (if-let [etype (util/entity-type (second args))]
               (assoc my-ctx :entity-type etype) 
               ;; entity type didn't parse
-              (assoc my-ctx :bad-args true :errors ["not a valid entity type"])))
-          (parse-distance [my-ctx]
-            (try
-              (let [r (Integer/parseInt (nth args 2))]
-                (if (<= 0 r 100) 
-                  (assoc my-ctx :distance r) 
-                  (-> my-ctx 
-                      (assoc :bad-args true)
-                      (update :errors concat ["distance must be between 0 and 100"]))))
-              (catch NumberFormatException e
-                (-> my-ctx 
-                    (assoc :bad-args true)
-                    (update :errors concat ["distance must be an integer"])))))]
-   (if (<= 2 (count args) 3)
-    ;; Handle entity type first
-    (cond-> (parse-entity-type ctx)
-      ;; Handle distance if it exists.
-      (= 3 (count args)) (parse-distance)) 
+              (assoc my-ctx :bad-args true :errors ["not a valid entity type"])))]
+   (if (= 2 (count args))
+    ;; Handle entity type
+    (parse-entity-type ctx)
     ;; Wrong # of args
     (assoc ctx :bad-args true))))
+
+;; only show the top n closest entities
+(def entity-top-n 8)
 
 (defmethod finder :entity
   [{:keys [^Player player
            bad-args
            errors
-           entity-type
-           distance]
-    :or {distance 100}}]
+           entity-type] :as ctx}]
   (when errors (util/send-message player errors))
   (if bad-args
     false
@@ -138,8 +125,8 @@
         (->> (seq (.getLivingEntities world))
              (filter #(= entity-type (util/entity-type %)))
              (map #(vector % (util/distance loc %)))
-             (filter #(<= (second %) distance))
              (sort-by second)
+             (take entity-top-n)
              (map (comp #(str (.toLowerCase (str %)) ;; maybe colorize?
                               " - "
                               (util/location-str %))     
@@ -292,8 +279,8 @@
     (let [c (compare distance (:distance that))]
       (if (zero? c) 
         ;; distance is same, compare everything else
-        (compare (dissoc this :distance)
-                 (dissoc that :distance))
+        (compare (count (:blocks that))
+                 (count (:blocks this)))
         c))))
 
 (defn new-vein 

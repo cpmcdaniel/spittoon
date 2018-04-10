@@ -14,7 +14,6 @@ public class SpittoonPlugin extends JavaPlugin {
 
             IFn require = Clojure.var("clojure.core", "require");
             require.invoke(Clojure.read("org.kowboy.bukkit.plugin"));
-            require.invoke(Clojure.read("org.kowboy.bukkit.repl"));
 
             IFn enable = Clojure.var("org.kowboy.bukkit.plugin", "enable");
             enable.invoke(this);

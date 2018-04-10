@@ -21,12 +21,14 @@
 
 (comment
   (in-ns 'org.kowboy.bukkit.scratch)
+  (+ 2 3)
+  (bean (.getServer @plugin))
   (def player (.. @plugin (getServer) (getPlayer "KowboyMac")))
 
   (def world (.getWorld player))
- 
-  (.. player getWorld getName) 
-  
+
+  (.. player getWorld getName)
+
 
   (def inventory (.getInventory player))
 
@@ -37,12 +39,14 @@
   (.getEnchantments pick-axe)
 
   (.addEnchantments pick-axe
-                    {Enchantment/DURABILITY (int 3)
-                     Enchantment/DIG_SPEED (int 5)
-                     Enchantment/MENDING (int 1)
+                    {Enchantment/DURABILITY        (int 3)
+                     Enchantment/DIG_SPEED         (int 5)
+                     Enchantment/MENDING           (int 1)
                      Enchantment/LOOT_BONUS_BLOCKS (int 3)})
 
-  (.getDataFolder @plugin) 
+  (.getDataFolder @plugin)
+  (.isSlimeChunk (.. player getLocation getChunk))
 
+  (drop 10 (iterator-seq (BlockIterator. player 100)))
   ) 
 
