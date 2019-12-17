@@ -9,7 +9,8 @@
             [org.kowboy.bukkit.eraser :as eraser]
             [org.kowboy.bukkit.journal :as journal]
             [org.kowboy.bukkit.drill :as drill]
-            [org.kowboy.bukkit.listener :as listener])
+            [org.kowboy.bukkit.listener :as listener]
+            [org.kowboy.bukkit.light :as light])
   (:import [org.bukkit.command CommandSender]))
 
 (defn register-command [plugin command-name executor]
@@ -19,14 +20,15 @@
 
 (defn register-commands
   [plugin]
-  (register-command plugin "repl"     (repl/repl-command plugin))
-  (register-command plugin "zeus"     (zeus/zeus-command plugin))
-  (register-command plugin "launcher" (launcher/launcher-command plugin))
-  (register-command plugin "xray"     (xray/xray-command plugin))
-  (register-command plugin "find"     (finder/find-command plugin))
-  (register-command plugin "excavate" (excavator/excavate-command plugin))
-  (register-command plugin "eraser"   (eraser/eraser-command plugin))
-  (register-command plugin "journal"  (journal/journal-command plugin))
+  (register-command plugin "repl"        (repl/repl-command plugin))
+  (register-command plugin "zeus"        (zeus/zeus-command plugin))
+  (register-command plugin "launcher"    (launcher/launcher-command plugin))
+  (register-command plugin "light-level" (light/light-level-command plugin))
+  (register-command plugin "xray"        (xray/xray-command plugin))
+  (register-command plugin "find"        (finder/find-command plugin))
+  (register-command plugin "excavate"    (excavator/excavate-command plugin))
+  (register-command plugin "eraser"      (eraser/eraser-command plugin))
+  (register-command plugin "journal"     (journal/journal-command plugin))
 
   ;; tab completions
   (listener/register-tab-completer
@@ -36,14 +38,16 @@
      "launcher" launcher/token-tree
      "find" finder/token-tree
      "eraser" eraser/token-tree
-     "journal" journal/token-tree}))
+     "journal" journal/token-tree
+     "light-level" light/token-tree}))
 
 (defn register-listeners
   [plugin]
   (launcher/register-listeners plugin)
   (zeus/register-listeners plugin)
   (eraser/register-listeners plugin)
-  (drill/register-listeners plugin))
+  (drill/register-listeners plugin)
+  (light/register-listeners plugin))
 
 (defn enable [plugin]
   ;; be sure to write out plugins/Spittoon/config.yaml

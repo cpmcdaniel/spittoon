@@ -1,6 +1,8 @@
 name: Spittoon
 
-version: 0.1.0
+version: 0.1.1
+
+api-version: 1.13
 
 author: Craig McDaniel
 
@@ -13,6 +15,14 @@ commands:
              /launcher on
              /launcher off
              /launcher power <power-level>
+    permission: kowboy.spittoon
+    permission-message: "You don't have permission kowboy.spittoon"
+  light-level:
+    description: Shows block light levels when the player is holding a torch and sneaking.
+    usage: |
+             /light-level on
+             /light-level off
+             /light-level radius <radius>
     permission: kowboy.spittoon
     permission-message: "You don't have permission kowboy.spittoon"
   repl:
@@ -63,6 +73,7 @@ commands:
              /journal show [page]
              /journal rem <entry number>
              /journal tp <entry number>
+             /journal from <entry number>
     permission: kowboy.spittoon
     permission-message: "You don't have permission kowboy.spittoon"
 

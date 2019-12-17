@@ -5,7 +5,7 @@
             [clojure.core.match :refer [match]]
             [clojure.string :as str])
   (:import [org.bukkit World Location Chunk ChunkSnapshot Material]
-           [org.bukkit.block Block]
+           [org.bukkit.block Block Biome]
            [org.bukkit.entity Entity EntityType Player]
            [org.bukkit.command CommandExecutor]))
 
@@ -15,14 +15,15 @@
 (def living-entities
   (filter #(.isAlive %) (EntityType/values)))
 
+(def biomes
+  (Biome/values))
+
 (def token-tree 
   {"entities" nil
    "blocks" nil
-   "entity" 
-   (into {} (for [le living-entities] [(.toLowerCase (str le)) nil]))
-   
-   "block"
-   (into {} (for [bm block-materials] [(.toLowerCase (str bm)) nil]))})
+   "entity" (into {} (for [le living-entities] [(.toLowerCase (str le)) nil]))
+   "biome" (into {} (for [bio biomes] [(.toLowerCase (str bio)) nil]))
+   "block" (into {} (for [bm block-materials] [(.toLowerCase (str bm)) nil]))})
 
 
 (defn get-cmd [{:keys [args]}]
@@ -127,7 +128,7 @@
              (map #(vector % (util/distance loc %)))
              (sort-by second)
              (take entity-top-n)
-             (map (comp #(str (.toLowerCase (str %)) ;; maybe colorize?
+             (map (comp #(str (.toLowerCase (str (util/entity-type %))) ;; maybe colorize?
                               " - "
                               (util/location-str %))     
                         first))
@@ -147,7 +148,7 @@
   (make-block-filter (->> (.. plugin 
                               (getConfig)
                               (getStringList "finder.block_filter"))
-                          (map #(Material/valueOf (.toUpperCase %))))))
+                          (map #(Material/getMaterial (.toUpperCase %))))))
 
 (defn block-group-summary
   [^Location loc [material-type blocks]]
@@ -388,6 +389,27 @@
              (conj ["---- SLIME CHUNKS ----"])))
       true)))
 
+(defmethod parse-args :biome
+  [{:keys [args] :as ctx}]
+  (if (= 2 (count args))
+    (if-let [biome (Biome/valueOf (.toUpperCase (second args)))]
+      (assoc ctx :biome biome)
+      (assoc ctx :bad-args true :errors ["not a valid biome"]))
+    (assoc ctx :bad-args true)))
+
+(defmethod finder :biome
+  [{:keys [player
+           biome
+           bad-args
+           errors]}]
+  (when (seq errors) (util/send-message player errors))
+  (if bad-args
+    false
+    (do
+      (util/send-message
+        player
+        "implement me")
+      true)))
 
 (defmethod finder :default
   [_] false)

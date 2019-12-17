@@ -10,38 +10,28 @@
 
 (def air? (material-predicate Material/AIR))
 (def bedrock? (material-predicate Material/BEDROCK))
-(def water? (material-predicate Material/WATER Material/STATIONARY_WATER))
+(def water? (material-predicate Material/WATER))
 (defn liquid? [^Block b] (.isLiquid b))
 
 ;; Chat colors for materials!
 (def color->materials
-  {ChatColor/DARK_GRAY  [Material/COAL_ORE 
-                         Material/COAL_BLOCK]
+  {ChatColor/DARK_GRAY  [Material/COAL_ORE]
    ChatColor/DARK_GREEN [Material/GRASS 
                          Material/DIRT]
-   ChatColor/GREEN      [Material/EMERALD_ORE
-                         Material/EMERALD_BLOCK]
-   ChatColor/DARK_RED   [Material/REDSTONE_ORE
-                         Material/REDSTONE_BLOCK
-                         Material/GLOWING_REDSTONE_ORE]
+   ChatColor/GREEN      [Material/EMERALD_ORE]
+   ChatColor/DARK_RED   [Material/REDSTONE_ORE]
    ChatColor/DARK_AQUA  [Material/AIR]
    ChatColor/DARK_PURPLE [Material/CLAY]
-   ChatColor/BLUE       [Material/STATIONARY_WATER
-                         Material/WATER
-                         Material/LAPIS_ORE
-                         Material/LAPIS_BLOCK]
-   ChatColor/WHITE      [Material/QUARTZ_ORE
-                         Material/QUARTZ_BLOCK
-                         Material/IRON_ORE
-                         Material/IRON_BLOCK]
-   ChatColor/GOLD       [Material/GOLD_ORE
-                         Material/GOLD_BLOCK]
-   ChatColor/AQUA       [Material/DIAMOND_ORE
-                         Material/DIAMOND_BLOCK]
+   ChatColor/BLUE       [Material/WATER
+                         Material/LAPIS_ORE]
+   ChatColor/WHITE      [Material/NETHER_QUARTZ_ORE
+                         Material/IRON_ORE]
+   ChatColor/GOLD       [Material/GOLD_ORE]
+   ChatColor/AQUA       [Material/DIAMOND_ORE]
    ChatColor/YELLOW     [Material/GLOWSTONE
                          Material/SAND
                          Material/SANDSTONE]
-   ChatColor/RED        [Material/STATIONARY_LAVA]
+   ChatColor/RED        [Material/LAVA]
    })
 
 (def color (into {} (for [[color materials] color->materials

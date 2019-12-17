@@ -8,7 +8,7 @@
            [org.bukkit Location Material Chunk World]))
 
 (defn- get-message
-  [^String message & args]
+  [^String message args]
   (if (pos? (count args))
     (apply format message args)
     message))
@@ -61,7 +61,7 @@
   (location [^Block block] (.getLocation block))
   (location-str [block] (location-str (location block)))
   (distance [^Block block thingy2]
-    (distance (location block) thingy2))
+    (distance (location block) (location thingy2)))
   (world [^Block block] (.getWorld block))
   (block [b] b)
 
@@ -69,7 +69,7 @@
   (location [^Entity entity] (.getLocation entity))
   (location-str [entity] (location-str (location entity)))
   (distance [^Entity entity thingy2] 
-    (distance (location entity) thingy2))
+    (distance (location entity) (location thingy2)))
   (world [^Entity entity] (.getWorld entity))
   (block [^Entity entity] (block (location entity))))
 

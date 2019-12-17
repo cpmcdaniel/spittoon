@@ -1,7 +1,8 @@
 (ns org.kowboy.bukkit.repl
-  (:require [clojure.tools.nrepl.server :as nrepl]
+  (:require [nrepl.server :as nrepl]
             [org.kowboy.bukkit.scratch :as scratch])
-  (:import [org.bukkit.command CommandExecutor]))
+  (:import [org.bukkit.command CommandExecutor]
+           [org.bukkit.plugin Plugin]))
 
 (def token-tree {"on" nil "off" nil})
 
@@ -28,7 +29,7 @@
 
 (defn start!
   "If the REPL is not running, start it."
-  ([plugin sender]
+  ([^Plugin plugin sender]
    (swap! repl-server
           (fn [server]
             (if server
@@ -40,7 +41,9 @@
                   ;; return the current value
                   server)
               ;; not running, start a new server and return it
-              (let [new-server (nrepl/start-server :handler (nrepl-handler))]
+              (let [port (.. plugin (getConfig) (getInt "repl.port" 0))
+                    new-server (nrepl/start-server :handler (nrepl-handler)
+                                                   :port port)]
                 (scratch/inject-plugin plugin)
                 (when sender
                   (.sendMessage sender (format "REPL started on port %d"

@@ -40,13 +40,13 @@
           false)))))
 
 (def material->entity
-  {Material/LEATHER     org.bukkit.entity.Cow
-   Material/RABBIT_HIDE org.bukkit.entity.Rabbit
-   Material/PORK        org.bukkit.entity.Pig
-   Material/GOLD_NUGGET org.bukkit.entity.PigZombie
-   Material/FEATHER     org.bukkit.entity.Chicken
-   Material/STRING      org.bukkit.entity.Spider
-   Material/CARPET      org.bukkit.entity.Llama
+  {Material/LEATHER      org.bukkit.entity.Cow
+   Material/RABBIT_HIDE  org.bukkit.entity.Rabbit
+   Material/PORKCHOP     org.bukkit.entity.Pig
+   Material/GOLD_NUGGET  org.bukkit.entity.PigZombie
+   Material/FEATHER      org.bukkit.entity.Chicken
+   Material/STRING       org.bukkit.entity.Spider
+   Material/WHITE_CARPET org.bukkit.entity.Llama
    ;; can add more here later...
    })
 

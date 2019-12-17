@@ -29,7 +29,8 @@
 (def token-tree {"add" nil
                  "show" nil
                  "rem" nil
-                 "tp" nil})
+                 "tp" nil
+                 "from" nil})
 
 (defn journal-file
   [^Plugin plugin ^Player player]
@@ -85,6 +86,7 @@
         "show" (parse-show-args ctx)
         "rem"  (parse-entry-arg ctx :rem)
         "tp"   (parse-entry-arg ctx :tp)
+        "from" (parse-entry-arg ctx :from)
         ;; first argument not recognized
         (assoc ctx 
                :bad-args true
@@ -162,6 +164,16 @@
   (if-let [loc (get-entry-loc ctx)]
     (do (.teleport player loc)
         ctx)
+    (assoc ctx :errors
+               (format "Can't find location for entry %d" entry))))
+
+(defmethod journal :from
+  [{:keys [player entry] :as ctx}]
+  (if-let [loc (get-entry-loc ctx)]
+    (util/send-message
+      player
+      (format "Distance from journal entry %d: %#.1f" entry
+              (util/distance loc player)))
     (assoc ctx :errors
                (format "Can't find location for entry %d" entry))))
 

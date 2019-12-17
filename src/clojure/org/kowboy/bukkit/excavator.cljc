@@ -13,7 +13,7 @@
   (complement
     (blocks/material-predicate Material/AIR 
                                Material/BEDROCK
-                               Material/MOB_SPAWNER)))
+                               Material/SPAWNER)))
 
 (defn break-block
   "Break the block with the given pickaxe. If the pickaxe is nil, 
@@ -129,7 +129,7 @@
   (when (.isSlimeChunk player-chunk)
     (let [env (util/environment player-chunk)
           floor (floor-material env)
-          slab-type Material/STEP
+          slab-type Material/COBBLESTONE_SLAB
           slab-data 0x02]
       (doall 
         (for [x (range 16)
@@ -183,7 +183,7 @@
         ;; We will need this later so we can put lights around
         ;; them to prevent spawning.
         spawners (chunks/chunk-blocks
-                   ch (blocks/material-predicate Material/MOB_SPAWNER))]
+                   ch (blocks/material-predicate Material/SPAWNER))]
 
     ;; Liquid blocks around the perimiter need to be sealed off!
     ;; We don't want liquid hot magma pouring into our hole and destroying drops.

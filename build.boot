@@ -1,27 +1,22 @@
-(require 'boot.repl)
-(swap! boot.repl/*default-dependencies*
-       concat '[[cider/cider-nrepl "0.17.0-snapshot"]])
-
-(swap! boot.repl/*default-middleware*
-       concat '[cider.nrepl/cider-middleware])
-
 (set-env!
- :dependencies '[[org.spigotmc/spigot-api "1.12.2-R0.1-SNAPSHOT" :scope "provided"]
+ :dependencies '[[org.spigotmc/spigot-api "1.13.2-R0.1-SNAPSHOT" :scope "provided"]
                  [onetom/boot-lein-generate "0.1.3" :scope "test"]
-                 [org.clojure/clojure "1.8.0" :scope "runtime"]
-                 [org.clojure/tools.nrepl "0.2.12"]
-                 [org.clojure/tools.namespace "0.2.11"]
-                 [org.clojure/core.match "0.3.0-alpha5"]
-                 [cider/cider-nrepl "0.17.0-snapshot"]]
+                 [org.clojure/clojure "1.10.0" :scope "runtime"]
+                 [org.clojure/core.match "0.3.0"]
+                 [org.clojure/tools.nrepl "0.2.13"]
+                 [quil "3.0.0" :exclusions [com.lowagie/itext
+                                            org.bouncycastle/bctsp-jdk14]]
+		         [cider/cider-nrepl "0.21.1"]]
  :source-paths #{"src/clojure" "src/java"}
  :resource-paths #{"src/resources"}
- :repositories [["clojars" {:url "https://clojars.org/repo/"}]
-                ["central" {:url "http://repo.maven.apache.org/maven2/"}]
-                ["spigot"  {:url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"}]])
+ :repositories [["central" {:url "https://repo1.maven.org/maven2/"}]
+                ["clojars" {:url "https://clojars.org/repo/"}]
+                ["spigot"  {:url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"}]
+                ["bungeecord" {:url "https://oss.sonatype.org/content/repositories/snapshots"}]])
 
 (task-options!
  pom {:project 'org.kowboy/spittoon
-      :version "0.1.0"
+      :version "0.1.1"
       :description "KowboyMac's Clojure Minecraft Plugin"
       :url "https://github.com/cpmcdaniel/spittoon"
       :scm {:url "https://github.com/cpmcdaniel/spittoon"}
@@ -48,6 +43,6 @@
 
 (deftask dev
   []
-  (comp (watch) (build)
+  (comp (build)
         (sift :include [#"spittoon.*\.jar"])
         (target)))

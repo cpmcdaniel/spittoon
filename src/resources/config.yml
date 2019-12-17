@@ -12,7 +12,7 @@ finder:
   - lapis_ore
   - iron_ore
   - coal_ore
-  - quartz_ore
+  - nether_quartz_ore
   - glowstone
   - clay
   - sea_lantern
@@ -28,3 +28,6 @@ excavate:
     - quartz_ore
     - lapis_ore
     - redstone_ore
+light-level:
+  on: false
+  radius: 8
