@@ -1,0 +1,60 @@
+name: Spittoon
+
+version: 1.0
+
+api-version: 1.15
+
+author: Craig McDaniel
+
+main: org.kowboy.SpittoonPlugin
+
+commands:
+  spit:
+    description: Top-level command for all spittoon commands. Type /spittoon <subcommand> help for more information.
+    usage: |
+            /spit light-level
+            /spit find
+            /spit help
+
+permissions:
+  spittoon.*:
+    description: Allows execution of all Spittoon commands.
+    default: op
+    children:
+      spittoon.find: true
+      spittoon.light-level: true
+
+  spittoon.find.*:
+    description: Allows execution of all Spittoon find commands.
+    default: op
+    children:
+      spittoon.find.biome: true
+      spittoon.find.block: true
+      spittoon.find.entity: true
+      spittoon.find.slime: true
+
+  spittoon.find.biome:
+    description: Permission to use the Spittoon find biome command.
+    default: false
+  spittoon.find.block:
+    description: Permission to use the Spittoon find block/blocks command.
+    default: false
+  spittoon.find.entity:
+    description: Permission to use the Spittoon find entity/entities command.
+    default: false
+  spittoon.find.slime:
+    description: Permission to use the Spittoon find slime command.
+    default: false
+
+  spittoon.light-level.*:
+    description: Permission to use the Spittoon light level effects.
+    default: op
+    children:
+      spittoon.light-level.configure: false
+      spittoon.light-level.use: true
+
+  spittoon.light-level.configure:
+    description: Permission to configure the Spittoon light level effects.
+    default: false
+  spittoon.light-level.use:
+    description: Permission to see the Spittoon light level effects.

@@ -1,42 +1,56 @@
 # Spittoon - A Bukkit Plugin for Minecraft
-
-A playground for plugin experimentation using Clojure.
-
-Spittoon:
+_Spittoon_
 > a receptacle for spit, usually in a public place
 
-It also accurately describes the intention for this plugin, where my oddball
-plugin ideas are the spit, and the plugin is my "bukkit".
+A veritable spit bucket of ideas and utilities for [Bukkit](https://bukkit.org) servers (should also work on derivatives 
+like [Spigot MC](https://spigotmc.org) and [Paper MC](https://papermc.io)).
+
+___Requires Java 11.___
+
+## Features
+
+#### Light Level
+Ever have the need to light up caves and other areas in order to prevent mobs from spawning? This feature allows you 
+to see which blocks are not "lit up enough" to prevent mob spawning. This helps tremendously with efficient placement of
+light sources.
+
+__To activate the visual, the player needs to be sneaking and holding a torch in either hand.__
+
+[ADD SCREENSHOT]
+
+#### Find Things
+Ever been really frustrated by bad luck mining for diamonds? While exploration is a key part of the game, no one wants 
+to waste days looking for something specific. If you want to find something fast, this is the feature for you!
+
+The current list of things you can find with this feature includes:
+* __Biomes__ - The search range is limited because this can be very expensive for rare biomes. Be kind to your server.
+* __Entities__ - Specifically living entities (excluding players).
+* __Blocks__ - Find the nearest blocks of a certain type, or all mineral veins nearby.
+* __Slime Chunks__ - Find slime chunks near the player.
+
+## Commands
+* __/spit light-level on__ - Turns on the light-level feature.
+* __/spit light-level off__ - Turns the light-level feature off.
+* __/spit light-level apothem &lt;int>__ - Sets the apothem<sup>[1](#apothem)</sup> used by the light level effect.
+* __/spit find biome &lt;biome-type>__ - Searches nearby chunks for the given biome.
+* __/spit find block &lt;block-type> [apothem]__<sup>[1](#apothem)</sup> - Searches for nearby veins of the given 
+    block type.
+* __/spit find blocks [apothem]__<sup>[1](#apothem)</sup> - Searches for nearby veins of a configured set of block 
+    types.
+* __/spit find entities__ - Finds the nearest entity of each type for all living entities currently spawned.
+* __/spit find entity &lt;entity-type> [apothem]__<sup>[1](#apothem)</sup> - Searches for nearby entities of the given
+    type.
+* __/spit find slime [apothem]__<sup>[1](#apothem)</sup> - Finds nearby slime chunks.
+
+<a name="apothem"><sup>1</sup></a>: ___Apothem___ - The perpendicular line or distance from the center of a regular
+polygon (square) to any of its sides. You might think of this as the ___radius___, but technically that is the 
+distance from the center to any of the corners.
 
 ## Setup
 
-1. Download and install [SpigotMC](http://www.spigotmc.org) - follow their [BuildTools guide](https://www.spigotmc.org/wiki/buildtools/)
-2. Install [Boot](http://boot-clj.com/) (Clojure build tooling)
-3. Clone this repo locally (we'll call it ``$SPITTOON_DIR`)
-4. From your ``$SPITTOON_DIR`, run `boot build`
-5. Copy `$HOME/.m2/repository/org/kowboy/spittoon/0.1.0/spittoon-0.1.0.jar` into the `plugins` directory of your Spigot server
-
-Optional - instead of copying the JAR file, for local development you can create a symbolic link to the maven artifact
-repository location. Note, Spigot doesn't like it when you modify the plugin JAR file while the server is running, so
-rebuilding the JAR will require a restart of the Spigot server. I don't think Spigot even attempts hot reloading of
-plugins, so I have no idea why it behaves this way.
-
-## REPL
-
-The best way to hack on this is to use the REPL. If you are writing a bunch of code, recompiling, and restarting Spigot,
-then you are doing this Clojure thing all wrong! Watch the server console when it starts up. The Spittoon plugin will
-log what port the REPL is running on:
-
-```
-[18:37:14 INFO]: [Spittoon] REPL started on port 60981.
-```
-
-To add new commands or listeners, you will have to rebuild the JAR. Sad face.
-
-## TODO
-
-The REPL currently starts on a random port. It should use a default port to simplify connection. Optionally, it could
-look in `plugins/Spittoon/config.yml` for a port number configuration setting.
+1. Install a Bukkit server. I recommend [Paper MC](https://papermc.io).
+2. Grab the plugin JAR from [insert URL here later].
+3. Place the JAR file in the _plugins_ directory of your server.
 
 ## License
 
