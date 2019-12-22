@@ -24,17 +24,13 @@ import static org.kowboy.util.ChatUtils.sendSuccess;
 public final class FindSlimeCommandExecutor extends AbstractCommandExecutor {
     private static final int DEFAULT_APOTHEM = 8;
     private static final int TOP_N = 8;
-    private final JavaPlugin plugin;
 
     public FindSlimeCommandExecutor(JavaPlugin plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Shouldn't happen, but bail out just in case...
-        if (!(sender instanceof Player)) return true;
-
         Player player = (Player) sender;
 
         if (args.length == 0) {

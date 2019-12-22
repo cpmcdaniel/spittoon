@@ -38,9 +38,6 @@ public class FindEntitiesCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Shouldn't happen, but bail out just in case...
-        if (!(sender instanceof Player)) return true;
-
         sendSuccess(sender, "---- ENTITIES FOUND ----");
 
         Player p = (Player) sender;

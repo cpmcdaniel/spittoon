@@ -36,8 +36,8 @@ public final class ChatUtils {
         sendError(sender, "You must be a player to use this command!");
     }
 
-    public static void permissionError(Player player) {
-        sendError(player, "You don't have permission to do that!");
+    public static void permissionError(CommandSender sender) {
+        sendError(sender, "You don't have permission to do that!");
     }
 
     public static void broadcast(String msg) {

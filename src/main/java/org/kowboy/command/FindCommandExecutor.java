@@ -18,20 +18,32 @@ public final class FindCommandExecutor extends CompositeCommandExecutor {
     FindCommandExecutor(JavaPlugin plugin) {
         super("find", "Find nearby blocks, enities, biomes, and slime chunks.");
 
-        addSubCommand("entities", new FindEntitiesCommandExecutor(plugin), stopCompletion());
+        addSubCommand("entities",
+                new SenderPermissionFilter(new FindEntitiesCommandExecutor(plugin),"spittoon.find.entity"),
+                stopCompletion());
 
         FindEntityCommandExecutor findEntity = new FindEntityCommandExecutor(plugin);
-        addSubCommand("entity", findEntity, findEntity);
+        addSubCommand("entity",
+                new SenderPermissionFilter(findEntity, "spittoon.find.entity"),
+                findEntity);
 
         FindBlockCommandExecutor findBlock = new FindBlockCommandExecutor(plugin);
-        addSubCommand("block", findBlock, findBlock);
+        addSubCommand("block",
+                new SenderPermissionFilter(findBlock, "spittoon.find.block"),
+                findBlock);
 
-        addSubCommand("blocks", new FindBlocksCommandExecutor(plugin), stopCompletion());
+        addSubCommand("blocks",
+                new SenderPermissionFilter(new FindBlocksCommandExecutor(plugin), "spittoon.find.block"),
+                stopCompletion());
 
-        addSubCommand("slime", new FindSlimeCommandExecutor(plugin), stopCompletion());
+        addSubCommand("slime",
+                new SenderPermissionFilter(new FindSlimeCommandExecutor(plugin), "spittoon.find.slime"),
+                stopCompletion());
 
         FindBiomeCommandExecutor findBiome = new FindBiomeCommandExecutor(plugin);
-        addSubCommand("biome", findBiome, findBiome);
+        addSubCommand("biome",
+                new SenderPermissionFilter(findBiome, "spittoon.find.biome"),
+                findBiome);
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

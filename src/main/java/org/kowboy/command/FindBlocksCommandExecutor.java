@@ -29,17 +29,12 @@ final class FindBlocksCommandExecutor extends AbstractCommandExecutor {
     private static final int DEFAULT_APOTHEM = 0;
     private static final int MAX_APOTHEM = 2;
 
-    private final JavaPlugin plugin;
-
     FindBlocksCommandExecutor(JavaPlugin plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Shouldn't happen, but bail out just in case...
-        if (!(sender instanceof Player)) return true;
-
         final Player player = (Player) sender;
 
         if (args.length >= 1) {

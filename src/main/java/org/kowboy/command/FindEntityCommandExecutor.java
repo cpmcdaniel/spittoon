@@ -28,17 +28,13 @@ import static org.kowboy.util.ChatUtils.sendSuccess;
  */
 public final class FindEntityCommandExecutor extends AbstractCommandExecutor implements TabCompleter {
     private static final byte TOP_N = 8;
-    private final JavaPlugin plugin;
 
     public FindEntityCommandExecutor(JavaPlugin plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Shouldn't happen, but bail out just in case...
-        if (!(sender instanceof Player)) return true;
-
         if (args.length < 1) {
             help(sender, true);
             return true;

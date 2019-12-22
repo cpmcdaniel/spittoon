@@ -34,17 +34,12 @@ final class FindBlockCommandExecutor extends AbstractCommandExecutor implements 
     private static final int CHUNK_BLOCK_LIMIT = 1000;
     private static final int TOP_N = 5; // only show 5 closest veins.
 
-    private final JavaPlugin plugin;
-
     FindBlockCommandExecutor(JavaPlugin plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Shouldn't happen, but bail out just in case...
-        if (!(sender instanceof Player)) return true;
-
         final Player player = (Player) sender;
 
         if (args.length >= 1) {
