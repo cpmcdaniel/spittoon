@@ -56,5 +56,4 @@ distance from the center to any of the corners.
 
 Copyright © 2017 Craig McDaniel
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the Apache License 2.0.
