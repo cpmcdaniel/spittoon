@@ -49,7 +49,7 @@ distance from the center to any of the corners.
 ## Setup
 
 1. Install a Bukkit server. I recommend [Paper MC](https://papermc.io).
-2. Grab the plugin JAR from [insert URL here later].
+2. Grab the plugin JAR from [here](https://dev.bukkit.org/projects/spittoon/files).
 3. Place the JAR file in the _plugins_ directory of your server.
 
 ## License
