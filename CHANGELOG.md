@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file. This change
 ### Added
 - Initial release simply starts a Clojure REPL on port 7788.
 
-## [1.0-SNAPSHOT unreleased]
+## [1.0] - 2019-12-22
 ### Removed
 - All clojure project files.
 - No more REPL, as this will be deployed to a server in the public cloud.
