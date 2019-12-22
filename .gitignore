@@ -1,3 +1,11 @@
 /.idea/
 /projectFilesBackup/.idea/
 /target/
+/build/
+/.gradle/
+/gradle/
+/spittoon.iml
+/spittoon.ipr
+/spittoon.iws
+/spittoon.main.iml
+/spittoon.test.iml
