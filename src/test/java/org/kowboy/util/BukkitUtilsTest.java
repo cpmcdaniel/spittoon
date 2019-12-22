@@ -1,5 +1,6 @@
 package org.kowboy.util;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -52,10 +53,9 @@ public class BukkitUtilsTest {
 
         void assertLocationString() {
             String actual = BukkitUtils.formatLocation(loc, fractionDigits);
-            assertEquals(expected, actual);
+            assertEquals(expected, ChatColor.stripColor(actual));
         }
     }
-
 
     @Test
     public void testLocationString() {

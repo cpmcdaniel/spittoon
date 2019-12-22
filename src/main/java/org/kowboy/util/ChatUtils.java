@@ -2,6 +2,7 @@ package org.kowboy.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -44,5 +45,55 @@ public final class ChatUtils {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage(ChatColor.YELLOW + msg);
         }
+    }
+
+    public static ChatColor getColor(Material m) {
+        ChatColor selected;
+        switch (m) {
+            case COAL_ORE:
+                selected = ChatColor.DARK_GRAY;
+                break;
+            case GRASS:
+            case DIRT:
+                selected = ChatColor.DARK_GREEN;
+                break;
+            case EMERALD_ORE:
+                selected = ChatColor.GREEN;
+                break;
+            case REDSTONE_ORE:
+                selected = ChatColor.DARK_RED;
+                break;
+            case AIR:
+                selected = ChatColor.DARK_AQUA;
+                break;
+            case CLAY:
+                selected = ChatColor.DARK_PURPLE;
+                break;
+            case WATER:
+            case LAPIS_ORE:
+                selected = ChatColor.BLUE;
+                break;
+            case NETHER_QUARTZ_ORE:
+            case IRON_ORE:
+                selected = ChatColor.WHITE;
+                break;
+            case GOLD_ORE:
+                selected = ChatColor.GOLD;
+                break;
+            case DIAMOND_ORE:
+                selected = ChatColor.AQUA;
+                break;
+            case GLOWSTONE:
+            case SAND:
+            case SANDSTONE:
+                selected = ChatColor.YELLOW;
+                break;
+            case LAVA:
+                selected = ChatColor.RED;
+                break;
+            default:
+                selected = ChatColor.GRAY;
+        }
+        return selected;
     }
 }

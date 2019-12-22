@@ -54,7 +54,13 @@ public final class BukkitUtils {
     }
 
     public static final String formatLocation(int x, int y, int z) {
-        return "(" + x + ", " + y + ", " + z + ")";
+        return ChatColor.RESET + "(" +
+                ChatColor.RED + x +
+                ChatColor.RESET + ", " +
+                ChatColor.GREEN + y +
+                ChatColor.RESET + ", " +
+                ChatColor.BLUE + z +
+                ChatColor.RESET + ")";
     }
 
     public static final String formatLocation(int[] coords) {
@@ -68,11 +74,21 @@ public final class BukkitUtils {
         fmt.applyPattern("###0.0##");
         fmt.setMaximumFractionDigits(fractionDigits);
 
-        return "(" + fmt.format(x) + ", " + fmt.format(y) + ", " + fmt.format(z) + ")";
+        return ChatColor.RESET + "(" +
+                ChatColor.RED + fmt.format(x) +
+                ChatColor.RESET + ", " +
+                ChatColor.GREEN + fmt.format(y) +
+                ChatColor.RESET + ", " +
+                ChatColor.BLUE + fmt.format(z) +
+                ChatColor.RESET + ")";
     }
 
     public static final String formatLocation(int x, int z) {
-        return "(" + x + ", " + z + ")";
+        return ChatColor.RESET + "(" +
+                ChatColor.RED + x +
+                ChatColor.RESET + ", " +
+                ChatColor.BLUE +  z +
+                ChatColor.RESET + ")";
     }
 
     public static final String formatLocation(Chunk chunk) {

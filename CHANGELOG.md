@@ -19,4 +19,5 @@ All notable changes to this project will be documented in this file. This change
 ### Added
 - Implemented light-level and find commands (and their sub-commands).
 - Implemented permission filtering.
+- Better colorized output for improved readability.
 

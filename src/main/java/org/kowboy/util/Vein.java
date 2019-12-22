@@ -1,5 +1,6 @@
 package org.kowboy.util;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -158,6 +159,12 @@ public final class Vein implements Comparable<Vein> {
     @Override
     public String toString() {
         // Example: diamond_ore * 4: (-13, 12, 72)
-        return type.name().toLowerCase() + " * " + this.count + ": " + formatLocation(this.location);
+        return ChatUtils.getColor(type) +
+                type.name().toLowerCase() +
+                ChatColor.GRAY +
+                " * " +
+                this.count +
+                ": " +
+                formatLocation(this.location);
     }
 }
