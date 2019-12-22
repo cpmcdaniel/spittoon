@@ -6,7 +6,7 @@
 
     <groupId>org.kowboy</groupId>
     <artifactId>spittoon</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>9</maven.compiler.source>
