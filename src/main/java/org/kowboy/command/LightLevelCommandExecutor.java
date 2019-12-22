@@ -9,6 +9,7 @@ import org.kowboy.task.LightLevelTask;
 import org.kowboy.util.NumberUtils;
 
 import static org.kowboy.util.ChatUtils.sendError;
+import static org.kowboy.util.TabCompletionUtils.stopCompletion;
 
 /**
  * A command executor for turning the light-level feature on/off and configuring the apothem of effect.
@@ -33,7 +34,8 @@ public final class LightLevelCommandExecutor extends CompositeCommandExecutor {
                 return true;
             }
         };
-        addSubCommand("on", new SenderPermissionFilter(on, PERMISSION, false));
+        addSubCommand("on", new SenderPermissionFilter(on, PERMISSION, false),
+                stopCompletion());
 
         CommandExecutor off = new CommandExecutor() {
             @Override
@@ -42,9 +44,11 @@ public final class LightLevelCommandExecutor extends CompositeCommandExecutor {
                 return true;
             }
         };
-        addSubCommand("off", new SenderPermissionFilter(off, PERMISSION, false));
+        addSubCommand("off", new SenderPermissionFilter(off, PERMISSION, false),
+                stopCompletion());
 
-        addSubCommand("apothem", new SenderPermissionFilter(new Apothem(plugin), PERMISSION, false));
+        addSubCommand("apothem", new SenderPermissionFilter(new Apothem(plugin), PERMISSION, false),
+                stopCompletion());
     }
 
     private class Apothem extends AbstractCommandExecutor {

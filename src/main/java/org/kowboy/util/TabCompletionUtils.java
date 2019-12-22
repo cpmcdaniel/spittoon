@@ -20,12 +20,16 @@ public final class TabCompletionUtils {
                 (args[0].isEmpty() || candidate.toLowerCase().startsWith(args[0].toLowerCase()));
     }
 
+    private static TabCompleter stopInstance;
     public static final TabCompleter stopCompletion() {
-        return new TabCompleter() {
-            @Override
-            public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-                return Collections.emptyList();
-            }
-        };
+        if (stopInstance == null) {
+            stopInstance = new TabCompleter() {
+                @Override
+                public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+                    return Collections.emptyList();
+                }
+            };
+        }
+        return stopInstance;
     }
 }

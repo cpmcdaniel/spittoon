@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.kowboy.util.TabCompletionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -123,9 +124,11 @@ public abstract class CompositeCommandExecutor implements CommandExecutor, TabCo
                 // Shifts args by 1.
                 return sub.onTabComplete(sender, command, alias, Arrays.copyOfRange(args, 1, args.length));
             } else {
-                return new ArrayList<>(subCommands.keySet());
+                return subCommands.keySet().stream()
+                        .filter(TabCompletionUtils.partialMatch(args))
+                        .collect(Collectors.toList());
             }
         }
-        return null;
+        return Collections.emptyList();
     }
 }

@@ -18,6 +18,7 @@ import static org.kowboy.util.BukkitUtils.formatLocation;
 import static org.kowboy.util.BukkitUtils.getEntityType;
 import static org.kowboy.util.ChatUtils.sendError;
 import static org.kowboy.util.ChatUtils.sendSuccess;
+import static org.kowboy.util.TabCompletionUtils.partialMatch;
 
 /**
  * Finds all of a given LivingEntity type currently in the world, sorts them by distance from the player, and
@@ -71,6 +72,7 @@ public final class FindEntityCommandExecutor extends AbstractCommandExecutor imp
                     .filter(EntityType::isAlive)
                     .map(EntityType::name)
                     .map(String::toLowerCase)
+                    .filter(partialMatch(args))
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();
