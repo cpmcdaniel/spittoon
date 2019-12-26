@@ -24,3 +24,4 @@ All notable changes to this project will be documented in this file. This change
 ## [1.1-SNAPSHOT] - unreleased
 ### Changed
 - Converted from Maven build to Gradle.
+- Migrating from Java to Kotlin

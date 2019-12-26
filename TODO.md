@@ -6,4 +6,5 @@
 - [x] Tag 1.0
 - [x] Create plugin project on [bukkit.org](https://bukkit.org)
 - [x] Convert to Gradle build tooling
-- [ ] Convert to Kotlin?
+- [x] Add Kotlin support
+- [ ] Migrate to kotlin

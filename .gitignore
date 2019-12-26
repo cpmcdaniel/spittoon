@@ -3,7 +3,6 @@
 /target/
 /build/
 /.gradle/
-/gradle/
 /spittoon.iml
 /spittoon.ipr
 /spittoon.iws

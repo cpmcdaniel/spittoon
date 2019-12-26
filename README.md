@@ -5,8 +5,6 @@ _Spittoon_
 A veritable spit bucket of ideas and utilities for [Bukkit](https://bukkit.org) servers (should also work on derivatives 
 like [Spigot MC](https://spigotmc.org) and [Paper MC](https://papermc.io)).
 
-___Requires Java 9+.___
-
 ## Features
 
 #### Light Level

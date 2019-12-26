@@ -1,11 +1,8 @@
 name: Spittoon
-
 version: 1.1
-
 api-version: 1.15
-
 author: Craig McDaniel
-
+website:
 main: org.kowboy.SpittoonPlugin
 
 commands:
