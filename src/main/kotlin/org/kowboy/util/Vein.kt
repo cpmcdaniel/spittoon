@@ -101,7 +101,7 @@ class Vein(block: Block,
                 " * " +
                 count +
                 ": " +
-                location.toBlockPoint()
+                formatPoint(location.blockX, location.blockY, location.blockZ)
     }
 }
 

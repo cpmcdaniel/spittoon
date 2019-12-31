@@ -68,18 +68,14 @@ class LightLevelTask(private val apothem: Int, private val player: Player, priva
         val block = blockLocation.block
         // We only care about solid blocks that have Water or Air above.
         if (!block.type.isSolid) return
-        when (block.getRelative(BlockFace.UP).type) {
-            Material.AIR, Material.WATER -> {
-                // Get the location of the center of the top face of the block
-                val particleLoc = block.location.add(0.5, 1.0, 0.5)
-                // getLightFromBlocks ignores light from the sun
-                val lightLevel = particleLoc.block.lightFromBlocks
-                val color = getColor(lightLevel)
-                val data = DustOptions(color, 1.0f)
-                player.spawnParticle(Particle.REDSTONE, particleLoc, 3, data)
-            }
-            else -> {
-            }
+        if (!block.getRelative(BlockFace.UP).type.isSolid) {
+            // Get the location of the center of the top face of the block
+            val particleLoc = block.location.add(0.5, 1.0, 0.5)
+            // getLightFromBlocks ignores light from the sun
+            val lightLevel = particleLoc.block.lightFromBlocks
+            val color = getColor(lightLevel)
+            val data = DustOptions(color, 1.0f)
+            player.spawnParticle(Particle.REDSTONE, particleLoc, 3, data)
         }
     }
 
