@@ -21,7 +21,7 @@ All notable changes to this project will be documented in this file. This change
 - Implemented permission filtering.
 - Better colorized output for improved readability.
 
-## [1.1-SNAPSHOT] - unreleased
+## [1.1] - 2020-01-31
 ### Changed
 - Converted from Maven build to Gradle.
 - Migrating from Java to Kotlin
