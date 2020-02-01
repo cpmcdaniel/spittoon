@@ -13,13 +13,13 @@ targetCompatibility = JavaVersion.VERSION_1_8
 repositories {
     mavenCentral()
     maven {
-        url 'https://papermc.io/repo/repository/maven-public/'
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
 }
 
 dependencies {
-    compileOnly 'com.destroystokyo.paper:paper-api:1.15.1-R0.1-SNAPSHOT'
-    testImplementation 'com.destroystokyo.paper:paper-api:1.15.1-R0.1-SNAPSHOT'
+    compileOnly 'org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT'
+    testImplementation 'org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation 'junit:junit:4.12'
     testImplementation "io.mockk:mockk:1.9.3"
