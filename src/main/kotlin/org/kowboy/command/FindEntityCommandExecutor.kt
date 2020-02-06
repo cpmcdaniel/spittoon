@@ -7,6 +7,9 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
+import org.kowboy.util.BukkitUtils.TICKS_PER_MINUTE
 import org.kowboy.util.BukkitUtils.getEntityType
 import org.kowboy.util.ChatUtils.sendError
 import org.kowboy.util.ChatUtils.sendSuccess
@@ -43,7 +46,10 @@ open class FindEntityCommandExecutor(plugin: JavaPlugin) : AbstractCommandExecut
                 .sorted()
                 .take(TOP_N)
                 .map { ed: EntityDistance -> ed.entity }
-                .map { le: LivingEntity -> toString(le) }
+                .map { le: LivingEntity ->
+                    le.addPotionEffect(PotionEffect(PotionEffectType.GLOWING, TICKS_PER_MINUTE * 5, 1))
+                    toString(le)
+                }
                 .forEach { s: String -> sendSuccess(player, s) }
         return true
     }

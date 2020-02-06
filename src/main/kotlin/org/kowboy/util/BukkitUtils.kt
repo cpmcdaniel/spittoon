@@ -28,6 +28,8 @@ object BukkitUtils {
     const val BLOCKS_PER_CHUNK: Byte = 16
     const val MAX_CHUNK_APOTHEM = 1024 // subject to change
     const val MAX_BLOCK_APOTHEM = MAX_CHUNK_APOTHEM * BLOCKS_PER_CHUNK
+    const val TICKS_PER_SECOND = 20
+    const val TICKS_PER_MINUTE = TICKS_PER_SECOND * 60
 
     /**
      * Converts a String value to the appropriate Biome enum. Swallows [IllegalArgumentException] execption.
