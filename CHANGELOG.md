@@ -25,3 +25,7 @@ All notable changes to this project will be documented in this file. This change
 ### Changed
 - Converted from Maven build to Gradle.
 - Migrating from Java to Kotlin
+
+## [1.2] - 2020-02-06
+### Added
+- Glowing effect has been added to entities found via `find entity`.
