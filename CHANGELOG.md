@@ -30,7 +30,7 @@ All notable changes to this project will be documented in this file. This change
 ### Added
 - Glowing effect has been added to entities found via `find entity`.
 
-## [1.3] - unreleased
+## [1.3] - 2020-02-08
 ### Added
 - Glowing effect for `find entities` command.
 - New command to exclude entities from `find entities`.
