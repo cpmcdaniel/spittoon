@@ -4,8 +4,12 @@ import org.bukkit.*
 import org.bukkit.block.Biome
 import org.bukkit.block.Block
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
+import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 import org.kowboy.util.ChatUtils.sendDebug
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -245,5 +249,13 @@ object BukkitUtils {
     fun <T> spy(sender: CommandSender, subject: T, format: (T) -> String): T {
         sendDebug(sender, format(subject))
         return subject
+    }
+
+    /**
+     * Adds the glowing potion effect (spectral) to the given entity for the given number of minutes.
+     *
+     */
+    fun glow(entity: LivingEntity, minutes: Int) {
+        entity.addPotionEffect(PotionEffect(PotionEffectType.GLOWING, TICKS_PER_MINUTE * minutes, 1))
     }
 }

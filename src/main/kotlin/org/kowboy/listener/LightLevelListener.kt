@@ -34,6 +34,22 @@ class LightLevelListener(plugin: SpittoonPlugin) : Listener {
     // This is used to prevent spawning additional tasks on every move event.
     private val locks: MutableSet<UUID> = HashSet()
 
+    private val lightSources = setOf(
+            Material.TORCH,
+            Material.BEACON,
+            Material.GLOWSTONE,
+            Material.JACK_O_LANTERN,
+            Material.REDSTONE_LAMP,
+            Material.SEA_LANTERN,
+            Material.SEA_PICKLE,
+            Material.LANTERN,
+            Material.CONDUIT,
+            Material.CAMPFIRE,
+            Material.END_ROD,
+            Material.ENDER_CHEST,
+            Material.REDSTONE_TORCH,
+            Material.MAGMA_BLOCK)
+
     @EventHandler
     fun onPlayerSneak(event: PlayerToggleSneakEvent) {
         val player = event.player ?: return
@@ -44,14 +60,14 @@ class LightLevelListener(plugin: SpittoonPlugin) : Listener {
         // Only create the task if the player is sneaking...
         if (!event.isSneaking) return
         // ...and holding a torch
-        if (!isHoldingTorch(player)) return
+        if (!isHoldingLight(player)) return
         scheduleTask(player)
     }
 
-    private fun isHoldingTorch(player: Player): Boolean {
+    private fun isHoldingLight(player: Player): Boolean {
         val mainHand = player.inventory.itemInMainHand.type
         val offHand = player.inventory.itemInOffHand.type
-        return Material.TORCH == mainHand || Material.TORCH == offHand
+        return mainHand in lightSources || offHand in lightSources
     }
 
     private fun scheduleTask(player: Player) {

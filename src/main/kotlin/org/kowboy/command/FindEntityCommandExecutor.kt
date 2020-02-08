@@ -11,6 +11,7 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.kowboy.util.BukkitUtils.TICKS_PER_MINUTE
 import org.kowboy.util.BukkitUtils.getEntityType
+import org.kowboy.util.BukkitUtils.glow
 import org.kowboy.util.ChatUtils.sendError
 import org.kowboy.util.ChatUtils.sendSuccess
 import org.kowboy.util.TabCompletionUtils.partialMatch
@@ -47,7 +48,7 @@ open class FindEntityCommandExecutor(plugin: JavaPlugin) : AbstractCommandExecut
                 .take(TOP_N)
                 .map { ed: EntityDistance -> ed.entity }
                 .map { le: LivingEntity ->
-                    le.addPotionEffect(PotionEffect(PotionEffectType.GLOWING, TICKS_PER_MINUTE * 5, 1))
+                    glow(le, 5)
                     toString(le)
                 }
                 .forEach { s: String -> sendSuccess(player, s) }
@@ -58,8 +59,7 @@ open class FindEntityCommandExecutor(plugin: JavaPlugin) : AbstractCommandExecut
         return if (args.size == 1) {
             if (null != getEntityType(args[0])) emptyList() else Arrays.stream(EntityType.values())
                     .filter { et: EntityType -> et.isAlive }
-                    .map { et: EntityType -> et.name }
-                    .map { obj: String -> obj.toLowerCase() }
+                    .map { et: EntityType -> et.name.toLowerCase() }
                     .filter(partialMatch(args))
                     .collect(Collectors.toList())
         } else emptyList()

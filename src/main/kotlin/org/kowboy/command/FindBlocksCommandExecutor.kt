@@ -71,7 +71,7 @@ internal class FindBlocksCommandExecutor(plugin: JavaPlugin) : AbstractCommandEx
     }
 
     private fun makeBlockFilter(): BlockFilter {
-        val materialStrings = plugin.config.getStringList("finder.block-filter") ?: emptyList()
+        val materialStrings = plugin.config.getStringList("finder.block-whitelist") ?: emptyList()
         val (knownMaterials, unknownMaterials) = materialStrings.partition { getMaterial(it) != null }
         unknownMaterials.forEach {
             plugin.logger.severe("Unrecognized block type in finder.block-finder config: " + it!!)

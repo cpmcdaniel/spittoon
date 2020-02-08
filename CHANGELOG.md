@@ -29,3 +29,11 @@ All notable changes to this project will be documented in this file. This change
 ## [1.2] - 2020-02-06
 ### Added
 - Glowing effect has been added to entities found via `find entity`.
+
+## [1.3] - unreleased
+### Added
+- Glowing effect for `find entities` command.
+- New command to exclude entities from `find entities`.
+- Light-level now works when _any_ light-source item is held.
+### Changed
+- Renamed `block-filter` config setting to `block-whitelist`

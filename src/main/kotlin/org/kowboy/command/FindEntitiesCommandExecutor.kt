@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
+import org.kowboy.util.BukkitUtils.glow
 import org.kowboy.util.ChatUtils.sendSuccess
 import org.kowboy.util.formatPoint
 import java.util.function.BiConsumer
@@ -34,11 +35,16 @@ import java.util.stream.Collectors
  */
 class FindEntitiesCommandExecutor(private val plugin: JavaPlugin) : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
+        // Get the entity type blacklist and convert to a set
+        val blacklist = plugin.config["finder.entity-blacklist"] as List<String>?
+        val blackset = blacklist?.toSet() ?: emptySet()
+
         sendSuccess(sender, "---- ENTITIES FOUND ----")
         val p = sender as Player
         p.world.livingEntities.asSequence()
                 // don't include players
                 .filter { le: LivingEntity -> le !is Player }
+                .filter { le: LivingEntity -> le.type.toString().toLowerCase() !in blackset }
                 // group entities by type
                 .groupBy { it.type }
                 // convert each group of entities into an EntityGroupSummary
@@ -46,6 +52,7 @@ class FindEntitiesCommandExecutor(private val plugin: JavaPlugin) : CommandExecu
                     val groupSummary: EntityGroupSummary = EntityGroupSummary(p, et)
                     entities.fold(groupSummary) {
                         entityGroup: EntityGroupSummary, entity: LivingEntity ->
+                        glow(entity, 5)
                         entityGroup.acc(entity)
                         entityGroup
                     }

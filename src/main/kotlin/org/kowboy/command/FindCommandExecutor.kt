@@ -30,6 +30,10 @@ class FindCommandExecutor internal constructor(plugin: JavaPlugin) : CompositeCo
         addSubCommand("entity",
                 SenderPermissionFilter(findEntity, "spittoon.find.entity"),
                 findEntity)
+        val excludeEntity = ExcludeEntityCommandExecutor(plugin)
+        addSubCommand("exclude-entity",
+                SenderPermissionFilter(excludeEntity, "spittoon.find.exclude-entity"),
+                excludeEntity)
         val findBlock = FindBlockCommandExecutor(plugin)
         addSubCommand("block",
                 SenderPermissionFilter(findBlock, "spittoon.find.block"),
