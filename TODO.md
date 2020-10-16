@@ -7,4 +7,5 @@
 - [x] Create plugin project on [bukkit.org](https://bukkit.org)
 - [x] Convert to Gradle build tooling
 - [x] Add Kotlin support
-- [ ] Migrate to kotlin
+- [x] Migrate to kotlin
+- [ ] Migrate back to Clojure! Use tools.deps
